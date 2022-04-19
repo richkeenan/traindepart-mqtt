@@ -22,10 +22,7 @@ func New(username, password string) *Client {
 	}
 }
 
-// rttapi_richkeenan
-//  os.Getenv("PASSWORD")
-
-func (c *Client) DoIt(from, to string) (*SearchResult, error) {
+func (c *Client) Search(from, to string) (*SearchResult, error) {
 	url := fmt.Sprintf("https://api.rtt.io/api/v1/json/search/%s/to/%s", from, to)
 	req, _ := http.NewRequest("GET", url, nil)
 	req.SetBasicAuth(c.username, c.password)

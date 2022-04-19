@@ -14,7 +14,7 @@ func main() {
 	}
 
 	rttClient := rtt.New(cfg.Rtt.Username, cfg.Rtt.Password)
-	result, err := rttClient.DoIt("BAL", "VIC")
+	result, err := rttClient.Search("BAL", "VIC")
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
