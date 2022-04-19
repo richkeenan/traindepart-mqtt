@@ -10,13 +10,25 @@ import (
 
 type Config struct {
 	Rtt struct {
-		Username string `env:"RTT_USERNAME" cli:"rtt-username" yaml:"username"`
-		Password string `env:"RTT_PASSWORD" cli:"rtt-password" yaml:"password"`
+		Username    string `env:"RTT_USERNAME" cli:"rtt-username" yaml:"username"`
+		Password    string `env:"RTT_PASSWORD" cli:"rtt-password" yaml:"password"`
+		StationFrom string `env:"RTT_FROM" cli:"rtt-from" yaml:"station_from"`
+		StationTo   string `env:"RTT_TO" cli:"rtt-to" yaml:"station_to"`
+	}
+	Mqtt struct {
+		Broker      string `env:"MQTT_BROKER" cli:"mqtt-broker" yaml:"broker"`
+		Port        int    `env:"MQTT_PORT" cli:"mqtt-port" yaml:"port"`
+		Username    string `env:"MQTT_USERNAME" cli:"mqtt-username" yaml:"username"`
+		Password    string `env:"MQTT_PASSWORD" cli:"mqtt-password" yaml:"password"`
+		TopicPrefix string `env:"MQTT_TOPIC_PREFIX" cli:"mqtt-topic-prefix" yaml:"topic_prefix"`
 	}
 }
 
 func getConfig() (*Config, error) {
 	var cfg Config
+	cfg.Mqtt.TopicPrefix = "train"
+	cfg.Mqtt.Port = 1883
+
 	err := configure.ParseEnv(&cfg)
 	if err != nil {
 		return nil, fmt.Errorf("error reading environment variables, %v", err)
@@ -46,6 +58,12 @@ func getConfig() (*Config, error) {
 	}
 	if cfg.Rtt.Password == "" {
 		return nil, fmt.Errorf("rtt password not set")
+	}
+	if cfg.Rtt.StationFrom == "" {
+		return nil, fmt.Errorf("rtt station from not set")
+	}
+	if cfg.Rtt.StationTo == "" {
+		return nil, fmt.Errorf("rtt station to not set")
 	}
 
 	return &cfg, nil
