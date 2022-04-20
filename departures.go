@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/traindepartmqtt/rtt"
 	"time"
-	"trainstatus/rtt"
 )
 
 // TODO timezones?!?

@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/traindepartmqtt/mqtt"
+	"github.com/traindepartmqtt/rtt"
 	"os"
-	"trainstatus/mqtt"
-	"trainstatus/rtt"
 )
 
 func main() {
