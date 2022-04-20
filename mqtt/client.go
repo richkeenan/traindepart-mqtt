@@ -3,14 +3,17 @@ package mqtt
 import (
 	"fmt"
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"log"
 )
 
 type Client struct {
 	topicPrefix string
 	pahoClient  paho.Client
+
+	logger *log.Logger
 }
 
-func New(broker string, port int, username string, password string, topicPrefix string) (*Client, error) {
+func New(broker string, port int, username string, password string, topicPrefix string, logger *log.Logger) (*Client, error) {
 	opts := paho.NewClientOptions().AddBroker(fmt.Sprintf("tcp://%s:%d", broker, port))
 	if username != "" {
 		opts.SetUsername(username)
@@ -25,11 +28,14 @@ func New(broker string, port int, username string, password string, topicPrefix 
 	c := &Client{
 		topicPrefix: topicPrefix,
 		pahoClient:  p,
+		logger:      logger,
 	}
 
 	return c, nil
 }
 
 func (c *Client) Send(suffix, payload interface{}) {
-	c.pahoClient.Publish(fmt.Sprintf("%s/%s", c.topicPrefix, suffix), 0, false, payload)
+	topic := fmt.Sprintf("%s/%s", c.topicPrefix, suffix)
+	c.logger.Printf("Sending message on topic %s", topic)
+	c.pahoClient.Publish(topic, 0, false, payload)
 }
