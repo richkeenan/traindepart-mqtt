@@ -26,7 +26,7 @@ type Config struct {
 
 func getConfig() (*Config, error) {
 	var cfg Config
-	cfg.Mqtt.TopicPrefix = "train"
+	cfg.Mqtt.TopicPrefix = "traindepart"
 	cfg.Mqtt.Port = 1883
 
 	err := configure.ParseEnv(&cfg)
